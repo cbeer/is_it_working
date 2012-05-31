@@ -1,0 +1,75 @@
+= Is It Working
+
+This gem provides a mechanism for setting up a Rack handler that tests the status of various components of an application and reports the output. It is designed to be modular and give a comprehensive view of the application status with a consistent URL (/is_it_working by default).
+
+This handler can be used by monitoring to determine if an application is working or not, but it does not replace system level monitoring of low level resources. Rather it adds another level which tells if the application can actually use those resources.
+
+== Use It As Documentation
+
+A feature of this gem is that it gives you a consistent place to document the external dependencies of you application as code. The handler checking the status of you application should have a check for every line drawn from it to another box on a system architecture diagram.
+
+== Example
+
+Suppose you have a Rails application that uses the following services:
+
+* ActiveRecord uses PostgreSQL database
+* Caching is done using Rails.cache with a cluster of memcached instances
+* Web service API hosted at https://api.example.com
+* NFS shared directory symlinked to from system/data in the Rails root directory
+* SMTP server at mail.example.com
+* A black box service encapsulated in AwesomeService
+
+A monitoring handler for this set up could be set up in <tt>config/initializers/is_it_working.rb</tt> like this:
+
+  Rails.configuration.middleware.use(IsItWorking::Handler) do |h|
+    # Check the ActiveRecord database connection without spawning a new thread
+    h.check :active_record, :async => false
+    
+    # Check the memcache servers used by Rails.cache if using the MemCacheStore implementation
+    h.check :memcache, :cache => Rails.cache if Rails.cache.is_a?(ActiveSupport::Cache::MemCacheStore)
+    
+    # Check that the web service is working by hitting a known URL with Basic authentication
+    h.check :url, :get => "http://api.example.com/version", :username => "appname", :password => "abc123"
+    
+    # Check that the NFS mount directory is available with read/write permissions
+    h.check :directory, :path => Rails.root + "system/data", :permission => [:read, :write]
+    
+    # Check the mail server configured for ActionMailer
+    h.check :action_mailer if ActionMailer::Base.delivery_method == :smtp
+    
+    # Ping another mail server
+    h.check :ping, :host => "mail.example.com", :port => "smtp"
+    
+    # Check that AwesomeService is working using the service's own logic
+    h.check :awesome_service do |status|
+      if AwesomeService.active?
+        status.ok("service active")
+      else
+        status.fail("service down")
+      end
+    end
+  end
+
+== Output
+
+The response from the handler will be a plain text description of the checks that were run and the results of those checks. If all the checks passed, the response code will be 200. If any checks fail, the response code will be 500. The response will look something like this:
+
+  Host: example.com
+  PID:  696
+  Timestamp: 2011-01-13T16:55:13-06:00
+  Elapsed Time: 84ms
+
+  OK:   active_record - ActiveRecord::Base.connection is active (2.516ms)
+  OK:   memcache - cache1.example.com:11211 is available (0.022ms)
+  OK:   memcache - cache2.example.com:11211 is available (0.022ms)
+  OK:   url - GET http://www.example.com/ responded with response '200 OK' (81.775ms)
+  OK:   directory - /app/myapp/system/data exists with read/write permission (0.044ms)
+  OK:   ping - mail.example.com is accepting connections on port "smtp" (61.854ms)
+
+== Security
+
+Keep in mind that the output from the status check will be available on a publicly accessible URL. This can pose a security risk if some servers are not on a private network behind a firewall. If necessary, you can obscure the host names in the predefined checks by providing an <tt>:alias</tt> option that will be output instead of the actual host name or IP address. Also, you can manually specify the hostname that the handler reports for the application with the Handler#hostname= method.
+
+== Thread Safety
+
+By default status checks each happen in their own thread. If you write your own status check, you must make sure it is thread safe. If you need to synchronize the check logic, you can use the +synchronize+ method on the handler object to do so. Alternatively, you can pass <tt>:async => false</tt> to any +check+ specification. This will cause the check to be executed in the main request thread.
