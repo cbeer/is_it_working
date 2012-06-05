@@ -18,12 +18,12 @@ end
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "tribune-is_it_working"
+    gem.name = "is_it_working"
     gem.summary = %Q{Rack handler for monitoring several parts of a web application.}
     gem.description = %Q{Rack handler for monitoring several parts of a web application so one request can determine which system or dependencies are down.}
     gem.authors = ["Brian Durand"]
     gem.email = ["bdurand@tribune.com"]
-    gem.files = FileList["lib/**/*", "spec/**/*", "bin/**/*", "example/**/*" "README.rdoc", "Rakefile", "TRIBUNE_CODE"].to_a
+    gem.files = FileList["lib/**/*", "spec/**/*", "bin/**/*", "example/**/*" "README.rdoc", "Rakefile", "License.txt"].to_a
     gem.has_rdoc = true
     gem.rdoc_options << '--line-numbers' << '--inline-source' << '--main' << 'README.rdoc'
     gem.extra_rdoc_files = ["README.rdoc"]

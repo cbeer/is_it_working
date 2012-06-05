@@ -4,20 +4,20 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = "tribune-is_it_working"
+  s.name = "is_it_working"
   s.version = "1.0.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brian Durand"]
-  s.date = "2012-05-31"
+  s.date = "2012-06-05"
   s.description = "Rack handler for monitoring several parts of a web application so one request can determine which system or dependencies are down."
   s.email = ["bdurand@tribune.com"]
   s.extra_rdoc_files = [
     "README.rdoc"
   ]
   s.files = [
+    "License.txt",
     "Rakefile",
-    "TRIBUNE_CODE",
     "lib/is_it_working.rb",
     "lib/is_it_working/checks/action_mailer_check.rb",
     "lib/is_it_working/checks/active_record_check.rb",
