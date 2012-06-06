@@ -22,7 +22,7 @@ begin
     gem.summary = %Q{Rack handler for monitoring several parts of a web application.}
     gem.description = %Q{Rack handler for monitoring several parts of a web application so one request can determine which system or dependencies are down.}
     gem.authors = ["Brian Durand"]
-    gem.email = ["bdurand@tribune.com"]
+    gem.email = ["mdobrota@tribune.com", "bdurand@tribune.com"]
     gem.files = FileList["lib/**/*", "spec/**/*", "bin/**/*", "example/**/*" "README.rdoc", "Rakefile", "License.txt"].to_a
     gem.has_rdoc = true
     gem.rdoc_options << '--line-numbers' << '--inline-source' << '--main' << 'README.rdoc'
