@@ -1,7 +1,7 @@
 module IsItWorking
   # Rack handler that will run a set of status checks on the application and report the
   # results. The results are formatted in plain text. If any of the checks fails, the
-  # response code will be 500 Server Error.
+  # response code will be 417 Expectation Failed.
   #
   # The checks to perform are defined in the initialization block. Each check needs a name
   # and can either be a predefined check, block, or an object that responds to the +call+
@@ -145,7 +145,7 @@ module IsItWorking
         info << "Timestamp: #{Time.now.iso8601}"
         info << "Elapsed Time: #{(elapsed_time * 1000).round}ms"
         
-        code = (fail ? 200 : 500)
+        code = (fail ? 200 : 417)
         
         [code, headers, [info.join("\n"), "\n\n", messages.join("\n")]]
       end

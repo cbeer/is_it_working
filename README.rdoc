@@ -52,7 +52,7 @@ A monitoring handler for this set up could be set up in <tt>config/initializers/
 
 == Output
 
-The response from the handler will be a plain text description of the checks that were run and the results of those checks. If all the checks passed, the response code will be 200. If any checks fail, the response code will be 500. The response will look something like this:
+The response from the handler will be a plain text description of the checks that were run and the results of those checks. If all the checks passed, the response code will be 200. If any checks fail, the response code will be 417. The response will look something like this:
 
   Host: example.com
   PID:  696
