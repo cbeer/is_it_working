@@ -13,15 +13,25 @@ describe IsItWorking::Status do
     status.should_not be_success
     status.messages.size.should == 1
     status.messages.first.should_not be_ok
+    status.messages.first.state.should == :fail
     status.messages.first.message.should == "boom"
   end
   
   it "should have successes" do
     status.ok("wow")
     status.should be_success
+    status.messages.first.state.should == :ok
     status.messages.size.should == 1
     status.messages.first.should be_ok
     status.messages.first.message.should == "wow"
+  end
+
+  it "should have successes and infos" do
+    status.ok("wow")
+    status.info("fyi")
+    status.should be_success
+    status.messages.each { |x| x.should be_ok }
+    status.messages.last.state.should == :info
   end
   
   it "should have both errors and successes" do

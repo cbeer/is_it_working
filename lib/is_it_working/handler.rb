@@ -134,7 +134,8 @@ module IsItWorking
         messages = []
         statuses.each do |status|
           status.messages.each do |m|
-            messages << "#{m.ok? ? 'OK:  ' : 'FAIL:'} #{status.name} - #{m.message} (#{status.time ? sprintf('%0.000f', status.time * 1000) : '?'}ms)"
+
+            messages << "#{sprintf '%-5s', m.state.to_s.upcase}: #{status.name} - #{m.message} (#{status.time ? sprintf('%0.000f', status.time * 1000) : '?'}ms)"
           end
         end
         
