@@ -6,15 +6,23 @@ module IsItWorking
     # This class is used to contain individual status messages. Eache method can represent either
     # and +ok+ message or a +fail+ message.
     class Message
-      attr_reader :message
+      class <<self
+        attr_accessor :ok_states
+      end
 
-      def initialize(message, ok)
+      self.ok_states = [:ok, :info]
+
+      attr_reader :message
+      attr_reader :state
+
+
+      def initialize(message, state)
         @message = message
-        @ok = ok
+        @state = state
       end
 
       def ok?
-        @ok
+        self.class.ok_states.include? state
       end
     end
 
@@ -34,12 +42,16 @@ module IsItWorking
 
     # Add a message indicating that the check passed.
     def ok(message)
-      @messages << Message.new(message, true)
+      @messages << Message.new(message, :ok)
+    end
+
+    def info(message)
+      @messages << Message.new(message, :info)
     end
 
     # Add a message indicating that the check failed.
     def fail(message)
-      @messages << Message.new(message, false)
+      @messages << Message.new(message, :fail)
     end
 
     # Returns +true+ only if all checks were OK.
