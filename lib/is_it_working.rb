@@ -14,6 +14,7 @@ module IsItWorking
   autoload :BundlerCheck, File.expand_path("../is_it_working/checks/bundler_check.rb", __FILE__)
   autoload :DalliCheck, File.expand_path("../is_it_working/checks/dalli_check.rb", __FILE__)
   autoload :DirectoryCheck, File.expand_path("../is_it_working/checks/directory_check.rb", __FILE__)
+  autoload :EnvCheck, File.expand_path("../is_it_working/checks/env_check.rb", __FILE__)
   autoload :MemcacheCheck, File.expand_path("../is_it_working/checks/memcache_check.rb", __FILE__)
   autoload :PingCheck, File.expand_path("../is_it_working/checks/ping_check.rb", __FILE__)
   autoload :RsolrCheck, File.expand_path("../is_it_working/checks/rsolr_check.rb", __FILE__)
