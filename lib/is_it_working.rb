@@ -17,6 +17,7 @@ module IsItWorking
   autoload :EnvCheck, File.expand_path("../is_it_working/checks/env_check.rb", __FILE__)
   autoload :MemcacheCheck, File.expand_path("../is_it_working/checks/memcache_check.rb", __FILE__)
   autoload :PingCheck, File.expand_path("../is_it_working/checks/ping_check.rb", __FILE__)
+  autoload :RequestCheck, File.expand_path("../is_it_working/checks/request_check.rb", __FILE__)
   autoload :RsolrCheck, File.expand_path("../is_it_working/checks/rsolr_check.rb", __FILE__)
   autoload :UrlCheck, File.expand_path("../is_it_working/checks/url_check.rb", __FILE__)
 end

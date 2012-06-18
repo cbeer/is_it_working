@@ -18,6 +18,10 @@ module IsItWorking
   #       SolrServer.available? ? ok("solr is up") : fail("solr is down")
   #     end
   #   end
+  class <<self
+    attr_accessor :request
+  end
+
   class Handler
     PATH_INFO = "PATH_INFO".freeze
     
@@ -39,6 +43,8 @@ module IsItWorking
     end
 
     def call(env)
+      IsItWorking.request = Rack::Request.new(env)
+
       if @app.nil? || env[PATH_INFO] == @route_path
         statuses = []
         t = Time.now
