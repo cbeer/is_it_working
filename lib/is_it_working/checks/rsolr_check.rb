@@ -10,8 +10,10 @@ module IsItWorking
     def call(status)
       if ping
         status.ok("service active")
-        status.info("numDocs: #{luke['numDocs']}")
-        status.info("lastModified: #{luke['lastModified']}")
+        unless luke.empty?
+          status.info("numDocs: #{luke['numDocs']}")
+          status.info("lastModified: #{luke['lastModified']}")
+        end
         registry.each do |name, text|
           status.info("#{name} - #{text}")
         end
@@ -30,7 +32,7 @@ module IsItWorking
 
     def registry
       @registry ||= begin
-                      resp = Blacklight.solr.get 'admin/registry.jsp', :params => { :wt => 'xml' }
+                      resp = @client.get 'admin/registry.jsp', :params => { :wt => 'xml' }
                       doc = Nokogiri::XML resp
                       h = {}
                       doc.xpath('/solr/*').each do |node|
