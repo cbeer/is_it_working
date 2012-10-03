@@ -35,8 +35,16 @@ module IsItWorking
 
       graph.groups.map do |group|
         nodes = graph.relations[group]
-        nodes.map { |gem| { :name => gem, :version => dependency_version(gem), :dependencies => graph.relations[gem].map { |d| { :name => d, :version => dependency_version(d) } } } }
-      end.flatten
+        nodes.map do |gem| 
+          next unless environment.current_dependencies.include? gem
+          { :name => gem, 
+            :version => dependency_version(gem), 
+            :dependencies => graph.relations[gem].map do |d| 
+              { :name => d, :version => dependency_version(d) } 
+            end 
+          }
+        end.compact
+      end.flatten.compact
     end
 
     def dependency_version(key)
