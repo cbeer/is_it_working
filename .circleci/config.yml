@@ -71,7 +71,7 @@ jobs:
 
   build_and_publish:
     docker:
-      - image: 916869144969.dkr.ecr.us-east-1.amazonaws.com/customink/ruby:focal-2.1
+      - image: 916869144969.dkr.ecr.us-east-1.amazonaws.com/customink/ruby:focal-2.7
         aws_auth:
           aws_access_key_id: ${PRODUCTION_AWS_ACCESS_KEY_ID}
           aws_secret_access_key: ${PRODUCTION_AWS_SECRET_ACCESS_KEY}
@@ -104,30 +104,6 @@ workflows:
     jobs:
       - tests:
           context: customink
-          name: "Ruby 2.1 Tests"
-          ruby-version: "2.1"
-      - tests:
-          context: customink
-          name: "Ruby 2.2 Tests"
-          ruby-version: "2.2"
-      - tests:
-          context: customink
-          name: "Ruby 2.3 Tests"
-          ruby-version: "2.3"
-      - tests:
-          context: customink
-          name: "Ruby 2.4 Tests"
-          ruby-version: "2.4"
-      - tests:
-          context: customink
-          name: "Ruby 2.5 Tests"
-          ruby-version: "2.5"
-      - tests:
-          context: customink
-          name: "Ruby 2.6 Tests"
-          ruby-version: "2.6"
-      - tests:
-          context: customink
           name: "Ruby 2.7 Tests"
           ruby-version: "2.7"
       - tests:
@@ -138,18 +114,32 @@ workflows:
           context: customink
           name: "Ruby 3.1 Tests"
           ruby-version: "3.1"
+      - tests:
+          context: customink
+          name: "Ruby 3.2 Tests"
+          ruby-version: "3.2"
+      - tests:
+          context: customink
+          name: "Ruby 3.3 Tests"
+          ruby-version: "3.3"
+      - tests:
+          context: customink
+          name: "Ruby 3.4 Tests"
+          ruby-version: "3.4"
+      - tests:
+          context: customink
+          name: "Ruby 4.0 Tests"
+          ruby-version: "4.0"
       - build_and_publish:
           context: customink
           requires:
-            - "Ruby 2.1 Tests"
-            - "Ruby 2.2 Tests"
-            - "Ruby 2.3 Tests"
-            - "Ruby 2.4 Tests"
-            - "Ruby 2.5 Tests"
-            - "Ruby 2.6 Tests"
             - "Ruby 2.7 Tests"
             - "Ruby 3.0 Tests"
             - "Ruby 3.1 Tests"
+            - "Ruby 3.2 Tests"
+            - "Ruby 3.3 Tests"
+            - "Ruby 3.4 Tests"
+            - "Ruby 4.0 Tests"
           filters:
             branches:
               only:
